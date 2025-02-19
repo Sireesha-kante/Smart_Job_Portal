@@ -42,6 +42,13 @@ public class JobApplication {
 		this.status = status;
 		this.appliedAt = appliedAt;
 	}
+	
+	public JobApplication(User user, ApplicationStatus status, LocalDateTime appliedAt) {
+		super();
+		this.user = user;
+		this.status = status;
+		this.appliedAt = appliedAt;
+	}
 
 	public Long getId() {
 		return id;

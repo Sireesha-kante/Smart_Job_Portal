@@ -3,6 +3,7 @@ package com.job.userservice.entity;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user_profiles")
@@ -20,6 +21,11 @@ public class UserProfile {
     private String bio;
     private String linkedinUrl;
     private String githubUrl;
+    
+    private String resumeUrl;
+
+    @ElementCollection
+    private Set<String> skills; 
 
     @ElementCollection
     private List<String> education;  // List of degrees/certifications
@@ -29,11 +35,16 @@ public class UserProfile {
 
     @ElementCollection
     private List<String> preferredJobCategories;
+    
+    
 
-	
+	public UserProfile() {
+		super();
+	}
 
 	public UserProfile(Long id, String email, User user, String bio, String linkedinUrl, String githubUrl,
-			List<String> education, List<String> experience, List<String> preferredJobCategories) {
+			String resumeUrl, Set<String> skills, List<String> education, List<String> experience,
+			List<String> preferredJobCategories) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -41,6 +52,8 @@ public class UserProfile {
 		this.bio = bio;
 		this.linkedinUrl = linkedinUrl;
 		this.githubUrl = githubUrl;
+		this.resumeUrl = resumeUrl;
+		this.skills = skills;
 		this.education = education;
 		this.experience = experience;
 		this.preferredJobCategories = preferredJobCategories;
@@ -94,6 +107,22 @@ public class UserProfile {
 		this.githubUrl = githubUrl;
 	}
 
+	public String getResumeUrl() {
+		return resumeUrl;
+	}
+
+	public void setResumeUrl(String resumeUrl) {
+		this.resumeUrl = resumeUrl;
+	}
+
+	public Set<String> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(Set<String> skills) {
+		this.skills = skills;
+	}
+
 	public List<String> getEducation() {
 		return education;
 	}
@@ -119,7 +148,5 @@ public class UserProfile {
 	}
 
 	
-  
-    
 }
 

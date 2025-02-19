@@ -23,7 +23,29 @@ public class UpdateRequest {
     private List<String> education;  // List of degrees/certifications
     private List<String> experience;  // List of past job roles
     private List<String> preferredJobCategories;
+ 
+    private String companyName;
+    private String companyWebsite;
+    private String industry;
   
+	public String getCompanyName() {
+		return companyName;
+	}
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	public String getCompanyWebsite() {
+		return companyWebsite;
+	}
+	public void setCompanyWebsite(String companyWebsite) {
+		this.companyWebsite = companyWebsite;
+	}
+	public String getIndustry() {
+		return industry;
+	}
+	public void setIndustry(String industry) {
+		this.industry = industry;
+	}
 	public Long getUserId() {
 		return userId;
 	}

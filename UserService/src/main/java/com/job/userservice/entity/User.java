@@ -27,10 +27,6 @@ public class User implements UserDetails {
     private String password;
     private String phone;
     private String location;
-    private String resumeUrl;
-
-    @ElementCollection
-    private Set<String> skills;  // ✅ Changed from String to Set<String>
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -41,22 +37,11 @@ public class User implements UserDetails {
         JOB_SEEKER
     }
     
-    
-
-    public User(String username, String email, String password, Role role) {
-		super();
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.role = role;
-	}
-
 	public User() {
 		super();
 	}
 
-	public User(Long id, String username, String email, String password, String phone, String location,
-			String resumeUrl, Set<String> skills, Role role) {
+	public User(Long id, String username, String email, String password, String phone, String location, Role role) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -64,8 +49,16 @@ public class User implements UserDetails {
 		this.password = password;
 		this.phone = phone;
 		this.location = location;
-		this.resumeUrl = resumeUrl;
-		this.skills = skills;
+		this.role = role;
+	}
+	
+	public User(String username, String email, String password, String phone, String location, Role role) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.phone = phone;
+		this.location = location;
 		this.role = role;
 	}
 
@@ -100,22 +93,6 @@ public class User implements UserDetails {
 
 	public void setLocation(String location) {
 		this.location = location;
-	}
-
-	public String getResumeUrl() {
-		return resumeUrl;
-	}
-
-	public void setResumeUrl(String resumeUrl) {
-		this.resumeUrl = resumeUrl;
-	}
-
-	public Set<String> getSkills() {
-		return skills;
-	}
-
-	public void setSkills(Set<String> skills) {
-		this.skills = skills;
 	}
 
 	public Role getRole() {

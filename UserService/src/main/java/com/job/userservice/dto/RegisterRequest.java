@@ -1,6 +1,7 @@
 package com.job.userservice.dto;
 
 import java.util.List;
+import java.util.Set;
 
 import com.job.userservice.entity.User.Role;
 
@@ -15,9 +16,13 @@ public class RegisterRequest {
 	    private String phone;
 	    private String location;
 	    private String resumeUrl;
+	    private Set<String> skills; 
 	    private String bio;
 	    private String linkedinUrl;
 	    private String githubUrl;
+	    private String companyName;
+	    private String companyWebsite;
+	    private String industry;
 
 	    @ElementCollection
 	    private List<String> education;  // List of degrees/certifications
@@ -27,13 +32,16 @@ public class RegisterRequest {
 
 	    @ElementCollection
 	    private List<String> preferredJobCategories;
+
 	    
 	    
-	    
-	    
+		public RegisterRequest() {
+			super();
+		}
+
 		public RegisterRequest(String username, String email, String password, Role role, String phone, String location,
-				String resumeUrl, String bio, String linkedinUrl, String githubUrl, List<String> education,
-				List<String> experience, List<String> preferredJobCategories) {
+				String resumeUrl, Set<String> skills, String bio, String linkedinUrl, String githubUrl,
+				List<String> education, List<String> experience, List<String> preferredJobCategories) {
 			super();
 			this.username = username;
 			this.email = email;
@@ -42,6 +50,7 @@ public class RegisterRequest {
 			this.phone = phone;
 			this.location = location;
 			this.resumeUrl = resumeUrl;
+			this.skills = skills;
 			this.bio = bio;
 			this.linkedinUrl = linkedinUrl;
 			this.githubUrl = githubUrl;
@@ -49,147 +58,145 @@ public class RegisterRequest {
 			this.experience = experience;
 			this.preferredJobCategories = preferredJobCategories;
 		}
-
-
-		public String getBio() {
-			return bio;
+     
+		public String getCompanyName() {
+			return companyName;
 		}
 
-
-		public void setBio(String bio) {
-			this.bio = bio;
+		public void setCompanyName(String companyName) {
+			this.companyName = companyName;
 		}
 
-
-		public String getLinkedinUrl() {
-			return linkedinUrl;
+		public String getCompanyWebsite() {
+			return companyWebsite;
 		}
 
-
-		public void setLinkedinUrl(String linkedinUrl) {
-			this.linkedinUrl = linkedinUrl;
+		public void setCompanyWebsite(String companyWebsite) {
+			this.companyWebsite = companyWebsite;
 		}
 
-
-		public String getGithubUrl() {
-			return githubUrl;
+		public String getIndustry() {
+			return industry;
 		}
 
-
-		public void setGithubUrl(String githubUrl) {
-			this.githubUrl = githubUrl;
+		public void setIndustry(String industry) {
+			this.industry = industry;
 		}
 
-
-		public List<String> getEducation() {
-			return education;
+		public String getUsername() {
+			return username;
 		}
 
-
-		public void setEducation(List<String> education) {
-			this.education = education;
+		public void setUsername(String username) {
+			this.username = username;
 		}
 
-
-		public List<String> getExperience() {
-			return experience;
+		public String getEmail() {
+			return email;
 		}
 
-
-		public void setExperience(List<String> experience) {
-			this.experience = experience;
+		public void setEmail(String email) {
+			this.email = email;
 		}
 
-
-		public List<String> getPreferredJobCategories() {
-			return preferredJobCategories;
+		public String getPassword() {
+			return password;
 		}
 
-
-		public void setPreferredJobCategories(List<String> preferredJobCategories) {
-			this.preferredJobCategories = preferredJobCategories;
+		public void setPassword(String password) {
+			this.password = password;
 		}
 
-
-		public RegisterRequest() {
-			super();
+		public Role getRole() {
+			return role;
 		}
-		
-		
+
+		public void setRole(Role role) {
+			this.role = role;
+		}
+
 		public String getPhone() {
 			return phone;
 		}
-
 
 		public void setPhone(String phone) {
 			this.phone = phone;
 		}
 
-
 		public String getLocation() {
 			return location;
 		}
-
 
 		public void setLocation(String location) {
 			this.location = location;
 		}
 
-
 		public String getResumeUrl() {
 			return resumeUrl;
 		}
-
 
 		public void setResumeUrl(String resumeUrl) {
 			this.resumeUrl = resumeUrl;
 		}
 
-
-		public RegisterRequest(String username, String email, String password, Role role, String phone, String location,
-				String resumeUrl) {
-			super();
-			this.username = username;
-			this.email = email;
-			this.password = password;
-			this.role = role;
-			this.phone = phone;
-			this.location = location;
-			this.resumeUrl = resumeUrl;
+		public Set<String> getSkills() {
+			return skills;
 		}
 
-		public RegisterRequest(String username, String email, String password, Role role) {
-			super();
-			this.username = username;
-			this.email = email;
-			this.password = password;
-			this.role = role;
+		public void setSkills(Set<String> skills) {
+			this.skills = skills;
 		}
-		public String getUsername() {
-			return username;
+
+		public String getBio() {
+			return bio;
 		}
-		public void setUsername(String username) {
-			this.username = username;
+
+		public void setBio(String bio) {
+			this.bio = bio;
 		}
-		public String getEmail() {
-			return email;
+
+		public String getLinkedinUrl() {
+			return linkedinUrl;
 		}
-		public void setEmail(String email) {
-			this.email = email;
+
+		public void setLinkedinUrl(String linkedinUrl) {
+			this.linkedinUrl = linkedinUrl;
 		}
-		public String getPassword() {
-			return password;
+
+		public String getGithubUrl() {
+			return githubUrl;
 		}
-		public void setPassword(String password) {
-			this.password = password;
+
+		public void setGithubUrl(String githubUrl) {
+			this.githubUrl = githubUrl;
 		}
-		public Role getRole() {
-			return role;
+
+		public List<String> getEducation() {
+			return education;
 		}
-		public void setRole(Role role) {
-			this.role = role;
-		} 
+
+		public void setEducation(List<String> education) {
+			this.education = education;
+		}
+
+		public List<String> getExperience() {
+			return experience;
+		}
+
+		public void setExperience(List<String> experience) {
+			this.experience = experience;
+		}
+
+		public List<String> getPreferredJobCategories() {
+			return preferredJobCategories;
+		}
+
+		public void setPreferredJobCategories(List<String> preferredJobCategories) {
+			this.preferredJobCategories = preferredJobCategories;
+		}
 	    
 	    
+	    
+	 
 
 }

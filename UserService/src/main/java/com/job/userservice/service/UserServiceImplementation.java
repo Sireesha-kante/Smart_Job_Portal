@@ -42,10 +42,10 @@ public class UserServiceImplementation implements UserService {
 	        }
 		 
 		 User user = new User(registerRequest.getUsername(), registerRequest.getEmail(),
-                 passwordEncoder.encode(registerRequest.getPassword()),registerRequest.getRole());
+                 passwordEncoder.encode(registerRequest.getPassword()),registerRequest.getPhone(),registerRequest.getLocation(),registerRequest.getRole());
         userRepository.save(user);
         UserProfile userProfile = new UserProfile(user.getId(), registerRequest.getEmail(), user, registerRequest.getBio(), 
-                registerRequest.getLinkedinUrl(), registerRequest.getGithubUrl(),
+                registerRequest.getLinkedinUrl(), registerRequest.getGithubUrl(), registerRequest.getResumeUrl(),registerRequest.getSkills(),
                 registerRequest.getEducation(), registerRequest.getExperience(), 
                 registerRequest.getPreferredJobCategories());
 			userProfileRepository.save(userProfile);
@@ -101,8 +101,11 @@ return new AuthResponse(jwtToken, registerRequest.getRole());
         userProfile.setBio(updateRequest.getBio());
         userProfile.setLinkedinUrl(updateRequest.getLinkedinUrl());
         userProfile.setGithubUrl(updateRequest.getGithubUrl());
+        userProfile.setResumeUrl(updateRequest.getResumeUrl());
+        userProfile.setSkills(updateRequest.getSkills());
         userProfile.setEducation(updateRequest.getEducation());
         userProfile.setExperience(updateRequest.getExperience());
+        
         userProfile.setPreferredJobCategories(updateRequest.getPreferredJobCategories());
         
         userProfileRepository.save(userProfile);
@@ -123,12 +126,9 @@ return new AuthResponse(jwtToken, registerRequest.getRole());
 		  user.setLocation(updateRequest.getLocation());
 		  user.setPassword(updateRequest.getPassword());
 		  user.setPhone(updateRequest.getPhone());
-		  user.setResumeUrl(updateRequest.getResumeUrl());
-		  user.setSkills(updateRequest.getSkills());
 		  user.setRole(updateRequest.getRole());
 		  
 		  return user;
-		  
 	}
 
 	@Override
