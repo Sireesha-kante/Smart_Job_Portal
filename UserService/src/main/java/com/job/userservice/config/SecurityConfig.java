@@ -2,38 +2,41 @@ package com.job.userservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JWTUtility jwtUtility;
+    private final JwtAuthFilter jwtAuthFilter;
 
-    public SecurityConfig(JWTUtility jwtUtility) {
-        this.jwtUtility = jwtUtility;
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())  // Disable CSRF for stateless authentication
+            .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // Permit public access to auth and Swagger
-                .requestMatchers("/api/user/**").hasAnyRole("JOB_SEEKER", "RECRUITER")  // Restrict user routes
-                .requestMatchers("/api/job/**").hasRole("JOB_SEEKER")  // Restrict job routes
-                .anyRequest().authenticated()  // Any other request must be authenticated
+                .requestMatchers("/api/recruiter/register", "/api/recruiter/login").permitAll() 
+                .requestMatchers("/api/recruiter/**").hasRole("RECRUITER") 
+                .requestMatchers("/api/user/**").hasRole("JOB_SEEKER") 
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Use stateless session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            .addFilterBefore(new JwtAuthFilter(jwtUtility), UsernamePasswordAuthenticationFilter.class);  // Custom JWT filter
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -41,5 +44,10 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
+    }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();  // ✅ Use this instead of creating new instances
     }
 }

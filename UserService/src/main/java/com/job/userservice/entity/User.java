@@ -113,11 +113,11 @@ public class User implements UserDetails {
 
 	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "ROLE_" + role.name());
+        return List.of(() -> "ROLE_" + role);
     }
 
     @Override
-    public String getUsername() { return username; }  // ✅ Return actual username
+    public String getUsername() { return email; }  // ✅ Return actual username
 
     @Override
     public boolean isAccountNonExpired() { return true; }
@@ -134,7 +134,7 @@ public class User implements UserDetails {
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub
-		return null;
+		return password;
 	}
 	
 }

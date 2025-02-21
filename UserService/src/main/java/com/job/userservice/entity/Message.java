@@ -36,6 +36,16 @@ public class Message {
 		this.sentAt = sentAt;
 	}
 
+	
+
+	public Message(User sender, User receiver, String content, LocalDateTime sentAt) {
+		super();
+		this.sender = sender;
+		this.receiver = receiver;
+		this.content = content;
+		this.sentAt = sentAt;
+	}
+
 	public Long getId() {
 		return id;
 	}

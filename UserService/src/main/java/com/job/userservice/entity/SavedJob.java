@@ -53,6 +53,12 @@ public class SavedJob {
 		this.jobId = jobId;
 	}
 
+	public SavedJob(User user ) {
+		
+		this.user=user;
+		
+	}
+
     
     
 }

@@ -3,10 +3,11 @@ package com.job.userservice.service;
 import java.util.List;
 
 import com.job.userservice.entity.SavedJob;
+import com.job.userservice.entity.User;
 
 public interface SavedJobService {
 
-	 public SavedJob saveJob(Long userId, Long jobId);
+	 public SavedJob saveJob(User user, Long jobId);
 	 
 	 public List<SavedJob> getSavedJobs(Long userId);
 	 
