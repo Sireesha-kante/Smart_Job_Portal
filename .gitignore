@@ -1,3 +1,7 @@
 /.metadata/
 ".sonarlint/storage/*.tar.gz" 
 ".sonarlint/" 
+".sonarlint/" 
+".sonarlint/" 
+".sonarlint/" 
+.sonarlint/ 
