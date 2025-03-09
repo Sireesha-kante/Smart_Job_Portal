@@ -11,52 +11,59 @@ public class UserProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String email;
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", unique = true, nullable = false)
     private User user;
 
+    
     private String bio;
+
     private String linkedinUrl;
     private String githubUrl;
-    
     private String resumeUrl;
 
     @ElementCollection
-    private Set<String> skills; 
+    @CollectionTable(name = "user_skills", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "skill")
+    private Set<String> skills;
 
     @ElementCollection
-    private List<String> education;  // List of degrees/certifications
+    @CollectionTable(name = "user_education", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "degree")
+    private List<String> education;
 
     @ElementCollection
-    private List<String> experience;  // List of past job roles
+    @CollectionTable(name = "user_experience", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "job_role")
+    private List<String> experience;
 
     @ElementCollection
+    @CollectionTable(name = "user_job_preferences", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "category")
     private List<String> preferredJobCategories;
-    
-    
 
-	public UserProfile() {
-		super();
-	}
+    public UserProfile() {
+    }
 
-	public UserProfile(Long id, String email, User user, String bio, String linkedinUrl, String githubUrl,
-			String resumeUrl, Set<String> skills, List<String> education, List<String> experience,
-			List<String> preferredJobCategories) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.user = user;
-		this.bio = bio;
-		this.linkedinUrl = linkedinUrl;
-		this.githubUrl = githubUrl;
-		this.resumeUrl = resumeUrl;
-		this.skills = skills;
-		this.education = education;
-		this.experience = experience;
-		this.preferredJobCategories = preferredJobCategories;
-	}
+    public UserProfile(String email, User user, String bio, String linkedinUrl, String githubUrl,
+                       String resumeUrl, Set<String> skills, List<String> education, List<String> experience,
+                       List<String> preferredJobCategories) {
+     
+        this.email = email;
+        this.user = user;
+        this.bio = bio;
+        this.linkedinUrl = linkedinUrl;
+        this.githubUrl = githubUrl;
+        this.resumeUrl = resumeUrl;
+        this.skills = skills;
+        this.education = education;
+        this.experience = experience;
+        this.preferredJobCategories = preferredJobCategories;
+    }
 
 	public Long getId() {
 		return id;
@@ -146,6 +153,5 @@ public class UserProfile {
 		this.preferredJobCategories = preferredJobCategories;
 	}
 
-	
+  
 }
-

@@ -22,10 +22,6 @@ public class JobPosting {
     private boolean isActive;
     private LocalDateTime createdAt;
     
-    
-	public JobPosting() {
-		super();
-	}
 	public JobPosting(Long id, Long recruiterId, String title, String description, String location,
 			String category, double salary, int experienceRequired, boolean isActive, LocalDateTime createdAt) {
 		super();
@@ -40,6 +36,26 @@ public class JobPosting {
 		this.isActive = isActive;
 		this.createdAt = createdAt;
 	}
+	
+	public JobPosting(Long recruiterId, String title, String description, String location,
+			String category, double salary, int experienceRequired, boolean isActive, LocalDateTime createdAt) {
+		super();
+		
+		this.recruiterId = recruiterId;
+		this.title = title;
+		this.description = description;
+		this.location = location;
+		this.category = category;
+		this.salary = salary;
+		this.experienceRequired = experienceRequired;
+		this.isActive = true;
+		this.createdAt = LocalDateTime.now();
+	}
+	
+	  public JobPosting() {
+	       this.createdAt = LocalDateTime.now(); // Set default created time
+	        this.isActive = true; // Default to active
+	    }
 	public Long getId() {
 		return id;
 	}

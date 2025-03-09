@@ -1,24 +1,30 @@
 package com.job.userservice.service;
 
-import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 
 import com.job.userservice.dto.AuthRequest;
 import com.job.userservice.dto.AuthResponse;
-import com.job.userservice.dto.RegisterRequest;
+import com.job.userservice.dto.RegisterJobSeekerRequest;
 import com.job.userservice.dto.UpdateRequest;
 import com.job.userservice.dto.UserDashboardDto;
+import com.job.userservice.dto.UserProfileDto;
 import com.job.userservice.entity.User;
 import com.job.userservice.entity.UserProfile;
 
 public interface UserService {
 
-    public AuthResponse register(RegisterRequest registerRequest);
+    public AuthResponse registerUser(RegisterJobSeekerRequest registerRequest);
 
     public AuthResponse authenticate(AuthRequest authRequest);
     
     public UserDashboardDto getUserDashboard(Long userId);
     public UserProfile updateUserProfile(UpdateRequest updateRequest);
     public User updateUser(UpdateRequest updateRequest);
-    public AuthResponse login(AuthRequest authRequest);
+    public AuthResponse loginUser(AuthRequest authRequest);
+    public UserProfileDto getUserProfile(Long userId);
+    ResponseEntity<?> getUserDetails(String token);
+
+
     
 }

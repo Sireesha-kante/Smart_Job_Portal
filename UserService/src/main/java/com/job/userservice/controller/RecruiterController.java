@@ -1,7 +1,7 @@
 package com.job.userservice.controller;
 
 import com.job.userservice.dto.AuthRequest;
-import com.job.userservice.dto.RegisterRequest;
+import com.job.userservice.dto.RegisterRecruiterRequest;
 import com.job.userservice.dto.UpdateRequest;
 import com.job.userservice.exception.ResourceNotFoundException;
 import com.job.userservice.exception.UserAlreadyExistsException;
@@ -26,7 +26,7 @@ public class RecruiterController {
     private RecruiterService recruiterService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerRecruiter(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> registerRecruiter(@RequestBody RegisterRecruiterRequest registerRequest) {
         try {
             return ResponseEntity.ok(recruiterService.registerRecruiter(registerRequest));
         } catch (UserAlreadyExistsException ex) {
@@ -75,20 +75,7 @@ public class RecruiterController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating profile");
         }
     }
-
-    @GetMapping("/dashboard/{recruiterId}")
-    @PreAuthorize("hasRole('RECRUITER')")
-    public ResponseEntity<?> getRecruiterDashboard(@PathVariable Long recruiterId) {
-        try {
-            return ResponseEntity.ok(recruiterService.getRecruiterDashboard(recruiterId));
-        } catch (ResourceNotFoundException ex) {
-            logger.error("Dashboard not found: {}", ex.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-        } catch (Exception ex) {
-            logger.error("Error retrieving dashboard", ex);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching dashboard data");
-        }
-    }
+    
 
     @GetMapping("/getUserDetails")
     public ResponseEntity<?> getUserDetails(@RequestHeader(value = "Authorization", required = false) String token) {

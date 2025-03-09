@@ -10,4 +10,5 @@ import com.job.jobservice.entity.JobPosting;
 @Repository
 public interface JobPostingRepository extends JpaRepository<JobPosting, Long> {
     List<JobPosting> findByRecruiterId(Long recruiterId);
+    List<JobPosting> findByTitleContainingAndLocationContainingAndCategoryContaining(String title, String location, String category);
 }

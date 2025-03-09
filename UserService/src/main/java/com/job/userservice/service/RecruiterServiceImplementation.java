@@ -35,12 +35,12 @@ public class RecruiterServiceImplementation implements RecruiterService {
     private PasswordEncoder passwordEncoder;
    
     @Override
-    public AuthResponse registerRecruiter(RegisterRequest registerRequest) {
+    public AuthResponse registerRecruiter(RegisterRecruiterRequest registerRequest) {
 
         User existingUser = userRepository.findByEmail(registerRequest.getEmail());
 
         if (existingUser != null) {
-            throw new RuntimeException("User with this email already exists.");
+            throw new RuntimeException("Recruiter with this email already exists.");
         }
 
         User recruiter = new User(
@@ -100,31 +100,39 @@ public class RecruiterServiceImplementation implements RecruiterService {
 
   
     @Override
-    public RecruiterProfile getRecruiterProfile(Long userId) {
-        return recruiterProfileRepository.findByUserId(userId)
+    public RecruiterProfileDto getRecruiterProfile(Long userId) {
+    	RecruiterProfile recruiterProfile=    recruiterProfileRepository.findByUserId(userId)
             .orElseThrow(() -> new RuntimeException("Recruiter profile not found"));
+    	
+    	return new RecruiterProfileDto(
+    			recruiterProfile.getId(),
+    			recruiterProfile.getUser(),
+    			recruiterProfile.getCompanyName(),
+    			recruiterProfile.getCompanyWebsite(),
+    			recruiterProfile.getIndustry(),
+    			recruiterProfile.getLocation());
     }
 
    
     @Override
     public RecruiterProfile updateRecruiterProfile(UpdateRequest updateRequest) {
 
-        RecruiterProfile recruiterProfile = recruiterProfileRepository.findByUserId(updateRequest.getUserId())
+    	RecruiterProfile recruiterProfile =  recruiterProfileRepository.findByUserId(updateRequest.getUserId())
             .orElseThrow(() -> new RuntimeException("Recruiter profile not found"));
-
+        
         recruiterProfile.setCompanyName(updateRequest.getCompanyName());
         recruiterProfile.setCompanyWebsite(updateRequest.getCompanyWebsite());
         recruiterProfile.setIndustry(updateRequest.getIndustry());
         recruiterProfile.setLocation(updateRequest.getLocation());
 
-        return recruiterProfileRepository.save(recruiterProfile);
+    return recruiterProfileRepository.save(recruiterProfile);
     }
 
    
     @Override
     public RecruiterDashboardDto getRecruiterDashboard(Long recruiterId) {
 
-        RecruiterDashboard dashboard = recruiterDashboardRepository.findByRecruiterId(recruiterId)
+        RecruiterDashboard dashboard = recruiterDashboardRepository.findByRecruiter_Id(recruiterId)
             .orElseThrow(() -> new RuntimeException("Recruiter dashboard not found"));
 
         return new RecruiterDashboardDto(

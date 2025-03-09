@@ -27,10 +27,10 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/recruiter/register", "/api/recruiter/login").permitAll() 
+                .requestMatchers("/api/recruiter/register", "/api/jobseeker/register").permitAll() 
                 .requestMatchers("/api/recruiter/**").hasRole("RECRUITER") 
-                .requestMatchers("/api/user/**").hasRole("JOB_SEEKER") 
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                .requestMatchers("/api/jobseeker/**").hasRole("JOB_SEEKER") 
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
