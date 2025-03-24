@@ -11,7 +11,8 @@ public interface RecruiterService {
     AuthResponse registerRecruiter(RegisterRecruiterRequest registerRequest);
     AuthResponse loginRecruiter(AuthRequest authRequest);
     RecruiterProfileDto getRecruiterProfile(Long userId);
-    RecruiterProfile updateRecruiterProfile(UpdateRequest updateRequest);
+    RecruiterProfile updateRecruiterProfile(UpdateRecruiterProfile updateRequest);
     RecruiterDashboardDto getRecruiterDashboard(Long recruiterId);
 	ResponseEntity<?> getUserDetails(String token);
+	String  deleteUserDetails(AuthRequest authRequest);
 }

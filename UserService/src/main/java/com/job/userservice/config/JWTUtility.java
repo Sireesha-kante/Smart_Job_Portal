@@ -4,15 +4,44 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Component
 public class JWTUtility {
+	
+	
+//	  @Value("${config.server.url}")
+//	    private String configServerUrl;
+//	  
+//	  private final RestTemplate restTemplate = new RestTemplate();
+//	  
+//	  
+//	  public JWTUtility() {
+//	        pushSigningKeyToConfigServer();
+//	    }
+//
+//	    private void pushSigningKeyToConfigServer() {
+//	        try {
+//	        	 System.out.println("Config Server URL: " + configServerUrl); 
+//	            Map<String, String> configData = new HashMap<>();
+//	            configData.put("jwt.secret", base64Key);
+//	            restTemplate.postForObject(configServerUrl + "/update-key", configData, String.class);
+//	            System.out.println("JWT Secret Key stored in Config Server.");
+//	        } catch (Exception e) {
+//	            System.err.println("Error pushing key to Config Server: " + e.getMessage());
+//	        }
+//
+//	    }
 
     // Static Secure Key Initialization
 	static byte[] keyBytes = new byte[64]; // 512 bits for HS384

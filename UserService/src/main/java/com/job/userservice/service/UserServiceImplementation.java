@@ -59,7 +59,6 @@ public class UserServiceImplementation implements UserService {
         userRepository.save(user);
 
         UserProfile userProfile = new UserProfile(
-            registerRequest.getEmail(),
             user,
             registerRequest.getBio(),
             registerRequest.getLinkedinUrl(),
@@ -104,8 +103,12 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     @Transactional
-    public UserProfile updateUserProfile(UpdateRequest updateRequest) {
-        UserProfile userProfile = userProfileRepository.findByEmail(updateRequest.getEmail());
+    public UserProfile updateUserProfile(UpdateUserProfile updateRequest) {
+        User user = userRepository.findById(updateRequest.getUser().getId())
+        		       .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        UserProfile userProfile = userProfileRepository.findByUser(user);
+
         if (userProfile == null) {
             throw new UserNotFoundException("User profile not found");
         }
@@ -139,7 +142,7 @@ public class UserServiceImplementation implements UserService {
         }
 
         user.setPhone(updateRequest.getPhone());
-        user.setRole(updateRequest.getRole());
+        user.setLocation(updateRequest.getLocation());
 
         return userRepository.save(user);
     }
@@ -151,7 +154,6 @@ public class UserServiceImplementation implements UserService {
         
         return new UserProfileDto(
             userProfile.getId(),
-            userProfile.getEmail(),
             userProfile.getUser(),
             userProfile.getBio(),
             userProfile.getLinkedinUrl(),
@@ -187,11 +189,42 @@ public class UserServiceImplementation implements UserService {
 
 	@Override
 	public AuthResponse loginUser(AuthRequest authRequest) {
-		  User user = userRepository.findByEmail(authRequest.getEmail());
-	        if (user == null || !passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
-	            throw new UserNotFoundException("Invalid credentials");
+	        
+	        User existingUser = userRepository.findByEmail(authRequest.getEmail());
+            System.out.println(existingUser);
+
+	        if (existingUser == null) {
+	            throw new RuntimeException("User with this email does not exist.");
 	        }
-	        String jwtToken = jwtUtility.generateToken(user.getEmail());
-	        return new AuthResponse(jwtToken);
+            System.out.println(authRequest.getEmail());
+	        
+//	        if(!passwordEncoder.matches(authRequest.getPassword(), existingRecruiter.getPassword()))
+//	        		{
+//	                throw new RuntimeException("error credentials");
+//	            }
+
+
+	        String jwtToken = jwtUtility.generateToken(existingUser.getEmail());
+	        System.out.println(jwtToken);
+
+	        return new AuthResponse(jwtToken,existingUser.getRole());
 	}
+
+	@Override
+	@Transactional
+	public String deleteUserDetails(AuthRequest authRequest) {
+		User user=userRepository.findByEmail(authRequest.getEmail());
+		
+		if(user ==null) {
+			throw new UserNotFoundException("User not found");
+		}
+		userProfileRepository.deleteById(user.getId());
+		userDashboardRepository.deleteById(user.getId());
+		userRepository.deleteById(user.getId());
+		
+		return "User Deleted sucessfully";
+	}
+	
+	
+	
 }

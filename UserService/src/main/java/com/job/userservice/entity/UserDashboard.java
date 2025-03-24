@@ -1,10 +1,15 @@
 package com.job.userservice.entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user_dashboard")
-public class UserDashboard {
+public class UserDashboard implements Serializable  {
+	
+    private static final long serialVersionUID = 1003L; // Unique value
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

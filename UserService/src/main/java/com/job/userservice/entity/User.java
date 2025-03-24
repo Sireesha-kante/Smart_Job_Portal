@@ -1,5 +1,6 @@
 package com.job.userservice.entity;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +12,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")  // ✅ Avoid conflicts with SQL keywords
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
+	
+	private static final long serialVersionUID = 1001L; 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,14 +38,20 @@ public class User implements UserDetails {
     private Role role;
     
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private UserProfile profile;
+    private UserProfile userprofile;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private UserDashboard dashboard;
+    private UserDashboard userdashboard;
+    
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private RecruiterProfile recruiterprofile;
+//
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private RecruiterDashboard recruiterdashboard;
 
     public enum Role {
-        RECRUITER,
-        JOB_SEEKER
+    	JOB_SEEKER, RECRUITER
+ 
     }
     
 	public User() {

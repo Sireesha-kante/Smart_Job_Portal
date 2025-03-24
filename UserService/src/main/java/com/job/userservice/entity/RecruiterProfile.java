@@ -1,11 +1,13 @@
 package com.job.userservice.entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.*;
 
 
 @Entity
 @Table(name = "recruiter_profiles")
-public class RecruiterProfile {
+public class RecruiterProfile implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +16,7 @@ public class RecruiterProfile {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;  // Linked to User entity
-
+    
     private String companyName;
     private String companyWebsite;
     private String industry;

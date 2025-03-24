@@ -2,14 +2,14 @@ package com.job.jobservice.service;
 
 import java.util.List;
 
-import com.job.jobservice.entity.JobPosting;
-
+import com.job.jobservice.dto.JobPostingDto;
 
 public interface JobPostingService {
-	
-	public JobPosting createJob(Long recruiterId, JobPosting jobPosting);
-	  public List<JobPosting> getJobsByRecruiter(Long recruiterId);
-	  public void deleteJob(Long jobId);
-	    public List<JobPosting> searchJobs(String title, String location, String category);
+	    
+	JobPostingDto createJob(Long recruiterId, JobPostingDto jobPostingDto);
+	    List<JobPostingDto> getJobsByRecruiter(Long recruiterId);
+	    List<JobPostingDto> searchJobs(String title, String location, String category);
+	    void deleteJob(Long jobId);
+	    
 
 }

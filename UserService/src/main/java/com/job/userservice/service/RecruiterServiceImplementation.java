@@ -3,6 +3,7 @@ package com.job.userservice.service;
 import com.job.userservice.config.JWTUtility;
 import com.job.userservice.dto.*;
 import com.job.userservice.entity.*;
+import com.job.userservice.exception.UserNotFoundException;
 import com.job.userservice.repository.RecruiterDashboardRepository;
 import com.job.userservice.repository.RecruiterProfileRepository;
 import com.job.userservice.repository.UserRepository;
@@ -115,9 +116,9 @@ public class RecruiterServiceImplementation implements RecruiterService {
 
    
     @Override
-    public RecruiterProfile updateRecruiterProfile(UpdateRequest updateRequest) {
+    public RecruiterProfile updateRecruiterProfile(UpdateRecruiterProfile updateRequest) {
 
-    	RecruiterProfile recruiterProfile =  recruiterProfileRepository.findByUserId(updateRequest.getUserId())
+    	RecruiterProfile recruiterProfile =  recruiterProfileRepository.findByUser(updateRequest.getUser())
             .orElseThrow(() -> new RuntimeException("Recruiter profile not found"));
         
         recruiterProfile.setCompanyName(updateRequest.getCompanyName());
@@ -144,37 +145,39 @@ public class RecruiterServiceImplementation implements RecruiterService {
     
     @Override
     public ResponseEntity<?> getUserDetails(String receivedToken) {
-        System.out.println("Received Token in Service: " + receivedToken);
-        
         if (receivedToken == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                 .body("Invalid or missing token");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid or missing token");
         }
 
-        // Extract username from JWT
         String username;
         try {
             username = jwtUtility.extractUsername(receivedToken);
-            System.out.println("Extracted Username: " + username);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("Invalid token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
         }
 
-        if (username == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("Token does not contain a valid username");
-        }
-
-        // Fetch user details from database
         User user = userRepository.findByEmail(username);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
         return ResponseEntity.ok(user);
     }
+
+
+	@Override
+	public String deleteUserDetails(AuthRequest authRequest) {
+User user=userRepository.findByEmail(authRequest.getEmail());
+		
+		if(user ==null) {
+			throw new UserNotFoundException("User not found");
+		}
+		recruiterProfileRepository.deleteById(user.getId());
+		recruiterDashboardRepository.deleteById(user.getId());
+		userRepository.deleteById(user.getId());
+		
+		return "User Deleted sucessfully";
+	}
 
 	}
 

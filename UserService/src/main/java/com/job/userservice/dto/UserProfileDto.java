@@ -9,8 +9,6 @@ public class UserProfileDto {
 
 	
 	    private Long id;
-	    private String email;
-
 	   
 	    private User user;
 
@@ -32,13 +30,32 @@ public class UserProfileDto {
 	    public UserProfileDto() {
 			// TODO Auto-generated constructor stub
 		}
+	    
+	    
 
-		public UserProfileDto(Long id, String email, User user, String bio, String linkedinUrl, String githubUrl,
-				String resumeUrl, Set<String> skills, List<String> education, List<String> experience,
+		public UserProfileDto(Long id, User user, String bio, String linkedinUrl, String githubUrl, String resumeUrl,
+				Set<String> skills, List<String> education, List<String> experience,
 				List<String> preferredJobCategories) {
 			super();
 			this.id = id;
-			this.email = email;
+			this.user = user;
+			this.bio = bio;
+			this.linkedinUrl = linkedinUrl;
+			this.githubUrl = githubUrl;
+			this.resumeUrl = resumeUrl;
+			this.skills = skills;
+			this.education = education;
+			this.experience = experience;
+			this.preferredJobCategories = preferredJobCategories;
+		}
+
+
+
+		public UserProfileDto(User user, String bio, String linkedinUrl, String githubUrl, String resumeUrl,
+				Set<String> skills, List<String> education, List<String> experience,
+				List<String> preferredJobCategories) {
+			super();
+
 			this.user = user;
 			this.bio = bio;
 			this.linkedinUrl = linkedinUrl;
@@ -56,14 +73,6 @@ public class UserProfileDto {
 
 		public void setId(Long id) {
 			this.id = id;
-		}
-
-		public String getEmail() {
-			return email;
-		}
-
-		public void setEmail(String email) {
-			this.email = email;
 		}
 
 		public User getUser() {
@@ -137,6 +146,7 @@ public class UserProfileDto {
 		public void setPreferredJobCategories(List<String> preferredJobCategories) {
 			this.preferredJobCategories = preferredJobCategories;
 		}
-	    
+
+		
 	    
 }

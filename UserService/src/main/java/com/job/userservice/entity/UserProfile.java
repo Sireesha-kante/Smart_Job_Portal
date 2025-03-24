@@ -1,19 +1,20 @@
 package com.job.userservice.entity;
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "user_profiles")
-public class UserProfile {
+public class UserProfile implements Serializable {
+	
+	private static final long serialVersionUID = 1002L; 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String email;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", unique = true, nullable = false)
@@ -49,21 +50,36 @@ public class UserProfile {
     public UserProfile() {
     }
 
-    public UserProfile(String email, User user, String bio, String linkedinUrl, String githubUrl,
-                       String resumeUrl, Set<String> skills, List<String> education, List<String> experience,
-                       List<String> preferredJobCategories) {
-     
-        this.email = email;
-        this.user = user;
-        this.bio = bio;
-        this.linkedinUrl = linkedinUrl;
-        this.githubUrl = githubUrl;
-        this.resumeUrl = resumeUrl;
-        this.skills = skills;
-        this.education = education;
-        this.experience = experience;
-        this.preferredJobCategories = preferredJobCategories;
-    }
+	public UserProfile(Long id, User user, String bio, String linkedinUrl, String githubUrl, String resumeUrl,
+			Set<String> skills, List<String> education, List<String> experience, List<String> preferredJobCategories) {
+		super();
+		this.id = id;
+		this.user = user;
+		this.bio = bio;
+		this.linkedinUrl = linkedinUrl;
+		this.githubUrl = githubUrl;
+		this.resumeUrl = resumeUrl;
+		this.skills = skills;
+		this.education = education;
+		this.experience = experience;
+		this.preferredJobCategories = preferredJobCategories;
+	}
+
+
+
+	public UserProfile(User user, String bio, String linkedinUrl, String githubUrl, String resumeUrl,
+			Set<String> skills, List<String> education, List<String> experience, List<String> preferredJobCategories) {
+		super();
+		this.user = user;
+		this.bio = bio;
+		this.linkedinUrl = linkedinUrl;
+		this.githubUrl = githubUrl;
+		this.resumeUrl = resumeUrl;
+		this.skills = skills;
+		this.education = education;
+		this.experience = experience;
+		this.preferredJobCategories = preferredJobCategories;
+	}
 
 	public Long getId() {
 		return id;
@@ -71,14 +87,6 @@ public class UserProfile {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public User getUser() {
@@ -153,5 +161,6 @@ public class UserProfile {
 		this.preferredJobCategories = preferredJobCategories;
 	}
 
+  
   
 }
