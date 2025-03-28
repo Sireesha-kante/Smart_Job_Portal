@@ -1,17 +1,22 @@
 package com.job.userservice.config;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.beans.factory.annotation.Autowired; 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken; 
-import org.springframework.security.core.userdetails.UserDetails; 
-import org.springframework.stereotype.Component; 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import jakarta.servlet.FilterChain; 
+import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest; 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -35,8 +40,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 && SecurityContextHolder.getContext().getAuthentication() == null) {
             
             String username = jwtUtility.extractUsername(token);
+           
+            List <String>  roles = jwtUtility.extractRoles(token);
+
+            // Rolesను Authoritiesగా మార్చండి
+            Collection<SimpleGrantedAuthority> authorities = roles.stream()
+                    .map(role -> new SimpleGrantedAuthority(role))
+                    .collect(Collectors.toList());
+            
             System.out.println("Received Token in Controller: " + token);
             System.out.println("Extracted Token: " + username);
+            
             if (username != null) {
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 

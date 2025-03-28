@@ -103,7 +103,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found Re-login / Register");
         }
         catch(Exception e) {
-        	logger.error("Error during recruiterlogin", e);
+        	logger.error("Error during userlogin", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong. Please try again.");
         }
     }

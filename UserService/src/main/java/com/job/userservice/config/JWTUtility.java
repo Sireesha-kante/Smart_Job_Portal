@@ -4,56 +4,43 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+
+
+import com.job.userservice.entity.User;
 
 import javax.crypto.SecretKey;
-import java.util.Base64;
+
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.function.Function;
 
 @Component
 public class JWTUtility {
-	
-	
-//	  @Value("${config.server.url}")
-//	    private String configServerUrl;
-//	  
-//	  private final RestTemplate restTemplate = new RestTemplate();
-//	  
-//	  
-//	  public JWTUtility() {
-//	        pushSigningKeyToConfigServer();
-//	    }
-//
-//	    private void pushSigningKeyToConfigServer() {
-//	        try {
-//	        	 System.out.println("Config Server URL: " + configServerUrl); 
-//	            Map<String, String> configData = new HashMap<>();
-//	            configData.put("jwt.secret", base64Key);
-//	            restTemplate.postForObject(configServerUrl + "/update-key", configData, String.class);
-//	            System.out.println("JWT Secret Key stored in Config Server.");
-//	        } catch (Exception e) {
-//	            System.err.println("Error pushing key to Config Server: " + e.getMessage());
-//	        }
-//
-//	    }
+	  
+	 @Value("${jwt.secret}") // This should be a base64-encoded string
+	    private String jwtSecretString;
+	    
+	    private SecretKey signingKey;
+	    
+	    @PostConstruct
+	    public void init() {
+	        // Convert the configured string to a SecretKey once at startup
+	        byte[] keyBytes = Decoders.BASE64.decode(jwtSecretString);
+	        this.signingKey = Keys.hmacShaKeyFor(keyBytes);
+	    }
 
-    // Static Secure Key Initialization
-	static byte[] keyBytes = new byte[64]; // 512 bits for HS384
-	static String base64Key = Base64.getEncoder().encodeToString(keyBytes);
-	private static final SecretKey SIGNING_KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(base64Key));
-
-    public String generateToken(String email) {
+    public String generateToken(User user) {
+    	   System.out.println(signingKey);
         return Jwts.builder()
-                .subject(email)
+                .subject(user.getEmail())
+                .claim("roles", List.of(user.getRole().name()))
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1-hour expiry
-                .signWith(SIGNING_KEY, Jwts.SIG.HS384)
+                .signWith(signingKey, Jwts.SIG.HS256)
                 .compact();
     }
 
@@ -69,10 +56,19 @@ public class JWTUtility {
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = Jwts.parser()
-                .verifyWith(SIGNING_KEY)
+                .verifyWith(signingKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
         return claimsResolver.apply(claims);
+    }
+
+    public List<String> extractRoles(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(signingKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claims.get("roles", List.class);
     }
 }

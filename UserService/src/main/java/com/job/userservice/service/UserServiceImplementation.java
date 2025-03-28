@@ -74,7 +74,7 @@ public class UserServiceImplementation implements UserService {
         UserDashboard userDashboard = new UserDashboard(user, 0, 0, 0);
         userDashboardRepository.save(userDashboard);
 
-        String jwtToken = jwtUtility.generateToken(user.getEmail());
+        String jwtToken = jwtUtility.generateToken(user);
         return new AuthResponse(jwtToken, registerRequest.getRole());
     }
 
@@ -84,7 +84,7 @@ public class UserServiceImplementation implements UserService {
         if (user == null || !passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
             throw new UserNotFoundException("Invalid credentials");
         }
-        String jwtToken = jwtUtility.generateToken(user.getEmail());
+        String jwtToken = jwtUtility.generateToken(user);
         return new AuthResponse(jwtToken);
     }
 
@@ -204,7 +204,7 @@ public class UserServiceImplementation implements UserService {
 //	            }
 
 
-	        String jwtToken = jwtUtility.generateToken(existingUser.getEmail());
+	        String jwtToken = jwtUtility.generateToken(existingUser);
 	        System.out.println(jwtToken);
 
 	        return new AuthResponse(jwtToken,existingUser.getRole());

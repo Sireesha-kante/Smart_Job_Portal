@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 
 
 @Configuration
@@ -22,6 +23,8 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
+        	.addServersItem(new Server().url("http://localhost:9000"))
+        	.addServersItem(new Server().url("http://localhost:8001")) 
             .info(new Info()
                 .title("Job Portal User Service APIS")
                 .version("1.0")

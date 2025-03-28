@@ -1,6 +1,7 @@
 package com.job.userservice.service;
 
 import com.job.userservice.config.JWTUtility;
+
 import com.job.userservice.dto.*;
 import com.job.userservice.entity.*;
 import com.job.userservice.exception.UserNotFoundException;
@@ -8,7 +9,6 @@ import com.job.userservice.repository.RecruiterDashboardRepository;
 import com.job.userservice.repository.RecruiterProfileRepository;
 import com.job.userservice.repository.UserRepository;
 
-import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,7 +72,7 @@ public class RecruiterServiceImplementation implements RecruiterService {
         recruiterDashboardRepository.save(recruiterDashboard);
 
         // Generate JWT Token
-        String jwtToken = jwtUtility.generateToken(recruiter.getEmail());
+        String jwtToken = jwtUtility.generateToken(recruiter);
 
         return new AuthResponse(jwtToken, recruiter.getRole());
     }
@@ -93,7 +93,7 @@ public class RecruiterServiceImplementation implements RecruiterService {
 //            }
 
 
-        String jwtToken = jwtUtility.generateToken(existingRecruiter.getEmail());
+        String jwtToken = jwtUtility.generateToken(existingRecruiter);
         System.out.println(jwtToken);
 
         return new AuthResponse(jwtToken,existingRecruiter.getRole());
